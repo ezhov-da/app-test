@@ -15,7 +15,7 @@ public class FileShreder {
 
     private static void shredder() {
         try {
-            File source = new File("E://test_file_clear.txt");
+            File source = new File("E:\test_file_clear.txt");
 
             File f1 = File.createTempFile("md51", ".hash");
             File f2 = File.createTempFile("md52", ".hash");
