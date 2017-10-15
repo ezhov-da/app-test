@@ -1,6 +1,6 @@
 package ru.ezhov.test.util;
 
-public class StaticClassNameUtil {
+public class ClassNameUtil {
 
     public static String getCurrentClassName() {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
