@@ -2,7 +2,7 @@ package ru.ezhov.test.util;
 
 public class StaticClassNameUtil {
 
-    public static String getClassName() {
+    public static String getCurrentClassName() {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         String className = "call class not find";
 
