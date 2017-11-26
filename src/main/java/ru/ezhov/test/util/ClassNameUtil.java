@@ -4,7 +4,7 @@ public class ClassNameUtil {
 
     public static String getCurrentClassName() {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        String className = "call class not find";
+        String className = "call class not found";
 
         if (stackTraceElements.length >= 3) {
             StackTraceElement element = stackTraceElements[2];
