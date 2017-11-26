@@ -1,5 +1,6 @@
 package ru.ezhov.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.ezhov.test.timer.OwnTimerTask;
 
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
  *
  * @author ezhov_da
  */
+@Ignore
 public class OwnTimerTaskTest {
 
     private static final Logger LOG = Logger.getLogger(OwnTimerTaskTest.class.getName());

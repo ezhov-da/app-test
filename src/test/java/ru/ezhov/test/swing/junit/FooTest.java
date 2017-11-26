@@ -3,10 +3,12 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.Ignore;
 
 import javax.swing.*;
 import java.awt.*;
 
+@Ignore
 public class FooTest extends TestCase {
 
     static Foo foo;
