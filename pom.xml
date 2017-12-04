@@ -9,7 +9,6 @@
     <build>
         <finalName>app-test</finalName>
 
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
