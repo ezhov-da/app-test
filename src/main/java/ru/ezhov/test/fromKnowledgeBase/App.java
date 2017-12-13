@@ -19,9 +19,9 @@ public class App {
         try {
             Properties<String, String> stringProperties =
                     PropertiesFactory.getPropertiesFromUserDirectory(".config-properties-unload-kb");
-            //app.unloadFromBase(stringProperties);
+//            app.unloadFromBase(stringProperties);
 //            app.renameFileFromTwoDash(stringProperties);
-            app.replaceLtGt(stringProperties);
+//            app.replaceLtGt(stringProperties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,10 +64,7 @@ public class App {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
-
     }
 
     private void unloadFromBase(Properties<String, String> stringProperties) {
@@ -97,9 +94,7 @@ public class App {
                             System.out.println(text);
 
                             saveToFile(pathToSaveFiles, name, link, text);
-
                         }
-
                     }
                 }
             }
