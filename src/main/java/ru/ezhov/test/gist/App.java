@@ -1,5 +1,6 @@
 package ru.ezhov.test.gist;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -31,20 +32,27 @@ public class App {
                 Collection<Gist> gistCollection = gistPageIterator.next();
 
                 for (Gist gist1 : gistCollection) {
-                    System.out.println("id: " + gist1.getId());
-                    System.out.println("description: " + gist1.getDescription());
-                    System.out.println("html url: " + gist1.getHtmlUrl());
-                    System.out.println("url: " + gist1.getUrl());
-                    System.out.println("is public: " + gist1.isPublic());
+//                    System.out.println("id: " + gist1.getId());
+//                    System.out.println("description: " + gist1.getDescription());
+//                    System.out.println("html url: " + gist1.getHtmlUrl());
+//                    System.out.println("url: " + gist1.getUrl());
+//                    System.out.println("is public: " + gist1.isPublic());
 //                    readFiles(gist1);
 
-                    Knowledge knowledge = new Knowledge(gist1.getDescription(), gist1.getHtmlUrl());
-                    knowledge.setKnowledgeFiles(readFilesToList(gist1));
-                    knowledgeList.add(knowledge);
+                    if (gist1.isPublic()) {
+                        Knowledge knowledge = new Knowledge(
+                                gist1.getDescription(),
+                                gist1.getHtmlUrl(),
+                                gist1.isPublic()
+                        );
+
+                        knowledge.setKnowledgeFiles(readFilesToList(gist1));
+                        knowledgeList.add(knowledge);
+                    }
                 }
             }
 
-            System.out.println(knowledgeList);
+//            System.out.println(knowledgeList);
 
             List<KnowledgeTransform> knowledgeTransforms = new ArrayList<>();
             knowledgeList.forEach(k -> {
@@ -52,7 +60,15 @@ public class App {
                 knowledgeTransforms.addAll(transforms);
             });
 
-            System.out.println(knowledgeTransforms);
+//            System.out.println(knowledgeTransforms);
+
+
+            ObjectMapper mapper = new ObjectMapper();
+//            mapper.writeValue(new File("c:\\user.json"), user);
+
+            String jsonInString = mapper.writeValueAsString(knowledgeTransforms);
+
+            System.out.println(jsonInString);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,9 +77,9 @@ public class App {
     private static void readFiles(Gist gist) throws Exception {
         Map<String, GistFile> stringFileMap = gist.getFiles();
         stringFileMap.forEach((s, f) -> {
-            System.out.println("s: " + s);
-            System.out.println("url: " + f.getRawUrl());
-            System.out.println("name: " + f.getFilename());
+//            System.out.println("s: " + s);
+//            System.out.println("url: " + f.getRawUrl());
+//            System.out.println("name: " + f.getFilename());
 
 //            HttpURLConnection urlConnection = null;
 //            try {
@@ -89,9 +105,9 @@ public class App {
 
         Map<String, GistFile> stringFileMap = gist.getFiles();
         stringFileMap.forEach((s, f) -> {
-            System.out.println("s: " + s);
-            System.out.println("url: " + f.getRawUrl());
-            System.out.println("name: " + f.getFilename());
+//            System.out.println("s: " + s);
+//            System.out.println("url: " + f.getRawUrl());
+//            System.out.println("name: " + f.getFilename());
             knowledgeFiles.add(new KnowledgeFile(f.getFilename(), f.getRawUrl()));
 
         });
@@ -117,10 +133,20 @@ class Knowledge {
     private String description;
     private String url;
     private List<KnowledgeFile> knowledgeFiles = new ArrayList<>();
+    private boolean isPublic;
 
-    public Knowledge(String description, String url) {
+    public Knowledge(String description, String url, boolean isPublic) {
         this.description = description;
         this.url = url;
+        this.isPublic = isPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 
     public String getDescription() {
@@ -155,6 +181,7 @@ class Knowledge {
                 "description='" + description + '\'' +
                 ", url='" + url + '\'' +
                 ", knowledgeFiles=" + knowledgeFiles +
+                ", isPublic=" + isPublic +
                 '}';
     }
 }
@@ -204,7 +231,8 @@ class KnowledgeConverter {
                             kf.getName(),
                             kf.getRawUrl(),
                             knowledge.getDescription(),
-                            knowledge.getUrl()
+                            knowledge.getUrl(),
+                            knowledge.isPublic()
                     )
             ));
 
@@ -218,12 +246,14 @@ class KnowledgeTransform {
     private String rawUrl;
     private String description;
     private String url;
+    private boolean isPublic;
 
-    public KnowledgeTransform(String name, String rawUrl, String description, String url) {
+    public KnowledgeTransform(String name, String rawUrl, String description, String url, boolean isPublic) {
         this.name = name;
         this.rawUrl = rawUrl;
         this.description = description;
         this.url = url;
+        this.isPublic = isPublic;
     }
 
     public String getName() {
@@ -258,6 +288,14 @@ class KnowledgeTransform {
         this.url = url;
     }
 
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
     @Override
     public String toString() {
         return "KnowledgeTransform{" +
@@ -265,6 +303,8 @@ class KnowledgeTransform {
                 ", rawUrl='" + rawUrl + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
+                ", isPublic=" + isPublic +
                 '}';
     }
 }
+
