@@ -18,7 +18,7 @@ public class App {
         App app = new App();
         try {
             Properties<String, String> stringProperties =
-                    PropertiesFactory.getPropertiesFromUserDirectory(".config-properties-unload-kb");
+                    PropertiesFactory.getPropertiesFromUserDirectory("config-properties-unload-kb.properties");
 //            app.unloadFromBase(stringProperties);
 //            app.renameFileFromTwoDash(stringProperties);
 //            app.replaceLtGt(stringProperties);
