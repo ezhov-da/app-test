@@ -19,7 +19,7 @@ public class App {
         try {
             Properties<String, String> stringProperties =
                     PropertiesFactory.getPropertiesFromUserDirectory("config-properties-unload-kb.properties");
-//            app.unloadFromBase(stringProperties);
+            app.unloadFromBase(stringProperties, new ProcessDataImpl());
 //            app.renameFileFromTwoDash(stringProperties);
 //            app.replaceLtGt(stringProperties);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class App {
         }
     }
 
-    private void unloadFromBase(Properties<String, String> stringProperties) {
+    private void unloadFromBase(Properties<String, String> stringProperties, ProcessData processData) {
         try {
             String classDriver = stringProperties.getProperty("class.driver");
             String url = stringProperties.getProperty("url");
@@ -89,11 +89,11 @@ public class App {
                             String link = resultSet.getString("link");
                             String text = resultSet.getString("text");
 
-                            System.out.println(name);
-                            System.out.println(link);
-                            System.out.println(text);
+//                            System.out.println(name);
+//                            System.out.println(link);
+//                            System.out.println(text);
 
-                            saveToFile(pathToSaveFiles, name, link, text);
+                            processData.process(name, link, text);
                         }
                     }
                 }
