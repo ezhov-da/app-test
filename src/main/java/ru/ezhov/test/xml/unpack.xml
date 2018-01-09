@@ -1,0 +1,20 @@
+<directory name="server">
+    <dirs>
+        <dir name="test1">
+            <dirs>
+                <dir name="test2">
+                    <dirs/>
+                    <files>
+                        <file name="3.txt"/>
+                    </files>
+                </dir>
+            </dirs>
+            <files>
+                <file name="2.txt"/>
+            </files>
+        </dir>
+    </dirs>
+    <files>
+        <file name="1.txt"/>
+    </files>
+</directory>
