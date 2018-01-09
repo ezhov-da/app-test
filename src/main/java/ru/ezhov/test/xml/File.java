@@ -10,15 +10,11 @@ public class File {
     @XmlAttribute(name = "name")
     private String name;
 
-    @XmlAttribute(name = "directory-name")
-    private String directory;
-
     public File() {
     }
 
-    public File(String name, String directory) {
+    public File(String name) {
         this.name = name;
-        this.directory = directory;
     }
 
     public String getName() {
@@ -29,11 +25,4 @@ public class File {
         this.name = name;
     }
 
-    public String getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(String directory) {
-        this.directory = directory;
-    }
 }
