@@ -9,23 +9,19 @@ public class Directory {
     @XmlAttribute(name = "name")
     private String name;
 
-    @XmlAttribute(name = "parent-directory")
-    private String nameParentDirectory;
-
     @XmlElementWrapper(name = "dirs")
-    @XmlElement(name="dir")
+    @XmlElement(name = "dir")
     private List<Directory> directories = new ArrayList<>();
 
     @XmlElementWrapper(name = "files")
-    @XmlElement(name="file")
+    @XmlElement(name = "file")
     private List<File> files = new ArrayList<>();
 
     public Directory() {
     }
 
-    public Directory(String name, String nameParentDirectory) {
+    public Directory(String name) {
         this.name = name;
-        this.nameParentDirectory = nameParentDirectory;
     }
 
     public String getName() {
@@ -52,11 +48,4 @@ public class Directory {
         return files;
     }
 
-    public String getNameParentDirectory() {
-        return nameParentDirectory;
-    }
-
-    public void setNameParentDirectory(String nameParentDirectory) {
-        this.nameParentDirectory = nameParentDirectory;
-    }
 }
