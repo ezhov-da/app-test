@@ -1,4 +1,4 @@
-package ru.ezhov.xmlJaxb;
+package ru.ezhov.test.xmlUnpack;
 
 import javax.xml.bind.JAXB;
 import java.io.IOException;

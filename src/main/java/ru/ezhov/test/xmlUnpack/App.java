@@ -1,4 +1,4 @@
-package ru.ezhov.xmlJaxb;
+package ru.ezhov.test.xmlUnpack;
 
 import java.io.InputStream;
 
