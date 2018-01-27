@@ -1,3 +1,6 @@
+package ru.ezhov.test.websockets;
+
+import ru.ezhov.test.websockets.WebsocketClientEndpoint;
 
 import java.net.URI;
 import java.net.URISyntaxException;

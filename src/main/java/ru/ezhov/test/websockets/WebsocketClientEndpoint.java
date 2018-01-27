@@ -1,3 +1,4 @@
+package ru.ezhov.test.websockets;
 
 import javax.websocket.*;
 import java.net.URI;
