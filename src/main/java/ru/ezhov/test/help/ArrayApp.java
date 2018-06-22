@@ -1,7 +1,12 @@
 package ru.ezhov.test.help;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
+@Test
 public class ArrayApp {
     public static void main(String[] args) {
         //Подготовка тестовых данных
@@ -31,4 +36,10 @@ public class ArrayApp {
         }
         System.out.println(Arrays.toString(resultArray));
     }
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@interface Test{
+
 }
