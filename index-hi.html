@@ -1,0 +1,105 @@
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/extjs/4.2.1/resources/css/ext-all.css"/>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/extjs/4.2.1/ext-all.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+              
+        
+        
+<script>
+
+Ext.Ajax.useDefaultXhrHeader = false;
+
+var panel = Ext.create('Ext.panel.Panel', {
+    xtype: 'panel',
+    id: 'testPanel',
+    region: 'center',
+    autoScroll: true
+})
+
+
+    Ext.application({
+        name: 'Gists',
+        launch: function () {
+            Ext.create('Ext.container.Viewport', {
+                layout: 'fit',
+                items: [
+                {
+                    xtype: 'panel',
+                    layout:'border', 
+                    items:[
+                           panel,
+                           {
+                            xtype: 'button',
+                            region: 'south',
+                            text: 'Click me',
+                            handler: function() {
+                                var text = '<pre>' + 
+                                        '    <code class="java">' + 
+                                        '    @Override\n' + 
+                                        '    public void trigger(TriggerFunctionArguments arg0) {\n' + 
+                                        '        long time = System.currentTimeMillis();\n' + 
+                                        '        String answer = "";\n' + 
+                                        '        DBContext dbc = null;\n' + 
+                                        '        Connection connection = null;\n' + 
+                                        '        try {\n' + 
+                                        '            dbc = DBContext.getNewDBContext();\n' + 
+                                        '            connection = dbc.getConnection();\n' + 
+                                        '            Context context = PIMContextFactory.getCurrentContextInternal();\n' + 
+                                        '            CommonDao commonDao = new CommonDao(context, connection);\n' + 
+                                        '\n' + 
+                                        '            String xml = arg0.getRequest().getParameter("param");\n' + 
+                                        '        ' + 
+                                        '            String errsave = updateByRawXML(context, connection, commonDao, xml);\n' + 
+                                        '            if(errsave != null) {\n' + 
+                                        '                answer = "Error: " + errsave;\n' + 
+                                        '            } else {\n' + 
+                                        '                answer = "Success";\n' + 
+                                        '            }\n' + 
+                                        '        } catch (Exception e) {\n' + 
+                                        '            answer = "Error: " + e.getMessage();\n' + 
+                                        '            e.printStackTrace();\n' + 
+                                        '        } finally {\n' + 
+                                        '            if (dbc != null && connection != null) {\n' + 
+                                        '                dbc.releaseConnection(connection);\n' + 
+                                        '            }\n' + 
+                                        '        }\n' + 
+                                        '        \n' + 
+                                        '        try {\n' + 
+                                        '            Print + Writer printer = arg0.getResponse().getWriter();\n' +
+                                        '            long dTime = System.currentTimeMillis() - time;\n' + 
+                                        '            printer.write("<answers><answer><GUID>" + guid + "</GUID><VALUE>" + answer + "</VALUE><atime>"+dTime+"</atime></answer></answers>");\n' + 
+                                        '        } catch (IOException e) {\n' + 
+                                        '            e.printStackTrace();\n' + 
+                                        '        }\n' + 
+                                        '    }' + 
+                                        '    </code>' + 
+                                        '</pre>';
+                                        panel.update(text)
+                                        console.log(panel.html);
+                                              $(document).ready(function() {
+                                          $('pre code').each(function(i, block) {
+                                            hljs.highlightBlock(block);
+                                          });
+                                        });
+                            }
+                           }
+                    ]
+                }
+
+                ]
+            })
+            ;
+        }
+    });
+</script>
+    </head>
+    <body>
+    </body>
+</html>
+
