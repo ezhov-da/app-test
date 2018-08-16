@@ -1,0 +1,43 @@
+<settings>
+    <tab name="Привет" id="hello">
+        <setting number="0" id="auto-translator" user-edit="true">
+            <type name="boolean"/>
+            <name>Автоматический перевод</name>
+            <description>
+                Если находятся русские символы, то переводит с русского на английский
+            </description>
+            <default-value>false</default-value>
+        </setting>
+        <setting number="1" user-edit="false">
+            <type name="text"/>
+            <name>Название приложения</name>
+            <description>
+                Вот как то так
+            </description>
+            <default-value>Переводчик</default-value>
+        </setting>
+        <setting number="2" user-edit="false">
+            <type name="selection">
+                <selections>
+                    <selection>
+                        <name>Зеленый</name>
+                        <value>GREEN</value>
+                    </selection>
+                    <selection>
+                        <name>Красный</name>
+                        <value>RED</value>
+                    </selection>
+                    <selection>
+                        <name>Черный</name>
+                        <value>GREEN</value>
+                    </selection>
+                </selections>
+            </type>
+            <name>Название приложения</name>
+            <description>
+                Вот как то так
+            </description>
+            <default-value>Переводчик</default-value>
+        </setting>
+    </tab>
+</settings>
