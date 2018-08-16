@@ -49,12 +49,9 @@ public class App {
 
     private void replaceLtGt(Properties<String, String> stringProperties) {
         String path = stringProperties.getProperty("path.to.save.files");
-
         File file = new File(path);
         File[] files = file.listFiles();
-
         for (File f : files) {
-
             try {
                 String s =
                         new String(Files.readAllBytes(f.toPath()), "UTF-8");
