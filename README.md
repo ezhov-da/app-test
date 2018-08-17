@@ -1,3 +1,3 @@
 # app-test
 
-Different tests :)
+Проект с разными "попробовать".
