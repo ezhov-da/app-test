@@ -1,0 +1,32 @@
+<html>
+<head>
+
+    <script>
+        function dodo() {
+            var el = document.getElementById('test');
+            var input = document.querySelector('input');
+            console.log(el);
+            console.log(input.files[0]);
+            var file = input.files[0];
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            xhr.open('post', 'file-up', true);
+            xhr.setRequestHeader("Content-Type", "multipart/form-data");
+            fd.append('file', file);
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(fd);
+        }
+    </script>
+
+</head>
+<body></body>
+
+<form action="file-up" method="post" enctype="multipart/form-data" target="_self    ">
+    <input id="test" type="file"/>
+    <input type="button" value="Subscribe!" onclick="dodo()">
+</form>
+</html>
