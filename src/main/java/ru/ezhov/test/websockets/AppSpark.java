@@ -1,6 +1,7 @@
 package ru.ezhov.test.websockets;
 
-import java.util.Scanner;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.Part;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
@@ -22,12 +23,14 @@ public class AppSpark {
 //        });
 
         post("file-up", (request, response) -> {
-            try (Scanner scanner = new Scanner(request.raw().getInputStream())) {
-                while (scanner.hasNextLine()) {
-                    System.out.println(scanner.nextLine());
-                }
-            }
-            return "qwqwqwqw";
+            request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+            Part part = request.raw().getPart("file");
+            System.out.println("Name: " + part.getName());
+            System.out.println("SubmittedFileName: " + part.getSubmittedFileName());
+//            try (InputStream is = request.raw().getPart("file").getInputStream()) {
+            // Use the input stream to create a file
+//            }
+            return "File uploaded";
         });
     }
 }
