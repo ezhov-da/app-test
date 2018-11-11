@@ -70,8 +70,6 @@ public class StarsTest {
                         );
 
                         System.out.println(point);
-
-                        g.dispose();
                     }
                 };
                 panelP.add(panel);
