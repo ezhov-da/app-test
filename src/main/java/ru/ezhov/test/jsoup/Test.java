@@ -1,11 +1,11 @@
 package ru.ezhov.test.jsoup;
 
-import com.sun.xml.internal.ws.api.streaming.XMLStreamWriterFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +37,8 @@ public class Test {
             Element element = document.body();
             Elements elements = element.getElementsByTag("span");
 
-            XMLStreamWriter xmlStreamWriter = XMLStreamWriterFactory.create(new FileOutputStream(file));
+            XMLOutputFactory output = XMLOutputFactory.newInstance();
+            XMLStreamWriter xmlStreamWriter = output.createXMLStreamWriter(new FileOutputStream(file));
             try {
                 xmlStreamWriter.writeStartDocument();
                 xmlStreamWriter.writeStartElement("questions");
