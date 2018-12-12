@@ -2,6 +2,7 @@ package ru.ezhov.test.websockets;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
@@ -32,5 +33,12 @@ public class AppSpark {
 //            }
             return "File uploaded";
         });
+
+
+        get("/id", (request, response) -> {
+            response.type("application/json");
+            return "{\"id\":" + new Random().nextInt() + "}";
+        });
+        get("/:id/get", (request, response) -> "get id: " + request.params("id"));
     }
 }
