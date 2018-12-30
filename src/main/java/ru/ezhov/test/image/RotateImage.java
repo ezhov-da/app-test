@@ -22,8 +22,7 @@ public class RotateImage {
     static BufferedImage current = null;
     static DefaultListModel<String> defaultListModel = new DefaultListModel();
 
-    public static void main(String[] args) throws IOException {
-        SwingUtilities.invokeLater(() -> {
+    public static void main(String[] args) throws IOException { SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Throwable ex) {
