@@ -3,6 +3,7 @@ package ru.ezhov.test.websockets;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Part;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
@@ -40,5 +41,14 @@ public class AppSpark {
             return "{\"id\":" + new Random().nextInt() + "}";
         });
         get("/:id/get", (request, response) -> "get id: " + request.params("id"));
+
+        post("ip", (request, response) -> {
+            try (Scanner scanner = new Scanner(request.raw().getInputStream())) {
+                while (scanner.hasNextLine()) {
+                    System.out.println(scanner.nextLine());
+                }
+            }
+            return "OK";
+        });
     }
 }
