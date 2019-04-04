@@ -160,6 +160,14 @@
             <version>4.0.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.imcdonagh/image4j -->
+        <dependency>
+            <groupId>com.github.imcdonagh</groupId>
+            <artifactId>image4j</artifactId>
+            <version>0.7.2</version>
+            <scope>system</scope>
+            <systemPath>D:/programmer/java-library/image4j-0.7.2.jar</systemPath>
+        </dependency>
 
     </dependencies>
 
