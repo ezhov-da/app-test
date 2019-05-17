@@ -30,6 +30,7 @@ class MDCTestThread extends Thread {
         MDC.put("Test", "OK");
         for (int i = 0; i < 3; i++) {
             LOG.info(i);
+            new CommonService().test();
         }
         MDC.clear();
     }

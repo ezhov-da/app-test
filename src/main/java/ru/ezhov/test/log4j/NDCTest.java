@@ -29,8 +29,10 @@ class NDCTestThread extends Thread {
         NDC.push("Thread " + number);
         for (int i = 0; i < 3; i++) {
             LOG.info(i);
+            new CommonService().test();
         }
         NDC.pop();
         NDC.remove();
     }
 }
+
