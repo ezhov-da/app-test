@@ -1,0 +1,6 @@
+<root>
+    <one test="GOOD">one</one>
+    <two>
+        <entry>test</entry>
+    </two>
+</root>
