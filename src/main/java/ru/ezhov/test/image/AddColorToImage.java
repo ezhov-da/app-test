@@ -1,7 +1,5 @@
 package ru.ezhov.test.image;
 
-import net.sf.image4j.codec.ico.ICOEncoder;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -150,12 +148,12 @@ public class AddColorToImage {
                                                 JOptionPane.showMessageDialog(IconPanelGenerator.this, "Ошибка записи файла");
                                             }
                                         } else if (radioButtonIco.isSelected()) {
-                                            try {
-                                                ICOEncoder.write(newImage, file);
-                                            } catch (IOException e1) {
-                                                e1.printStackTrace();
-                                                JOptionPane.showMessageDialog(IconPanelGenerator.this, "Ошибка записи файла");
-                                            }
+//                                            try {
+//                                                ICOEncoder.write(newImage, file);
+//                                            } catch (IOException e1) {
+//                                                e1.printStackTrace();
+//                                                JOptionPane.showMessageDialog(IconPanelGenerator.this, "Ошибка записи файла");
+//                                            }
                                         }
 
                                     }
