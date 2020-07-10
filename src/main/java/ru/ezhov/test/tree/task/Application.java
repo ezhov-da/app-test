@@ -15,6 +15,7 @@ public class Application {
                 new BinaryObject(103, "Дополнительная выкладка", null),
                 new BinaryObject(100, "Лояльность Хаммер", 103),
                 new BinaryObject(101, "Хаммер", 103),
+                new BinaryObject(111, "Хаммер child", 101),
                 new BinaryObject(123, "ЮХУ", null)
         );
 
@@ -33,6 +34,7 @@ public class Application {
                 if (treePresenterParent != null) {
                     final TreePresenter presenter = new TreePresenter(binaryObject.getId(), binaryObject.getName());
                     treePresenterParent.add(presenter);
+                    treePresenterMap.put(binaryObject.getId(), presenter);
                 } else {
                     TreePresenter treePresenterParentNew = new TreePresenter(binaryObject.getId(), binaryObject.getName());
                     treePresenterMap.put(binaryObject.getId(), treePresenterParentNew);
@@ -67,6 +69,15 @@ class BinaryObject {
 
     public Integer getPrnId() {
         return prnId;
+    }
+
+    @Override
+    public String toString() {
+        return "BinaryObject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", prnId=" + prnId +
+                '}';
     }
 }
 
@@ -111,5 +122,17 @@ class TreePresenter {
 
     public List<TreePresenter> getData() {
         return data;
+    }
+
+    @Override
+    public String toString() {
+        return "TreePresenter{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", checked=" + checked +
+                ", expanded=" + expanded +
+                ", leaf=" + leaf +
+                ", data=" + data +
+                '}';
     }
 }
