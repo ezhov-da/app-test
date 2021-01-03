@@ -1,11 +1,10 @@
 package ru.ezhov.test.base64;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ProcessingBase64 {
@@ -27,7 +26,7 @@ public class ProcessingBase64 {
     }
 
     public void toBase64(File source, File target) throws Exception {
-        BASE64Encoder base64Encoder = new BASE64Encoder();
+        Base64.Encoder base64Encoder = Base64.getEncoder();
         BufferedInputStream fileInputStream =
                 new BufferedInputStream(new FileInputStream(source));
 
@@ -53,7 +52,7 @@ public class ProcessingBase64 {
 
         fileInputStream.close();
 
-        String data = base64Encoder.encode(finalByte);
+        String data = new String(base64Encoder.encode(finalByte));
 
         FileWriter fileWriter = new FileWriter(target);
         fileWriter.write(data);
@@ -64,8 +63,8 @@ public class ProcessingBase64 {
 
     public void fromBase64(File source, File target) throws Exception {
         String text = new String(Files.readAllBytes(source.toPath()));
-        BASE64Decoder base64Decoder = new BASE64Decoder();
-        byte[] bytes = base64Decoder.decodeBuffer(text);
+        Base64.Decoder base64Decoder = Base64.getDecoder();
+        byte[] bytes = base64Decoder.decode(text);
         FileOutputStream fileOutputStream =
                 new FileOutputStream(target);
 
