@@ -2,10 +2,15 @@ package ru.ezhov.test.datetime
 
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 fun main() {
-    ZoneId.getAvailableZoneIds().forEach { println(it) }
+    // -Duser.timezone=Europe/London
+    println("${ZoneId.systemDefault()} now ${LocalDateTime.now()}")
+    println("now Moscow ${ZonedDateTime.now(ZoneId.of("Europe/Moscow")).toLocalDateTime()}")
+
+    //ZoneId.getAvailableZoneIds().forEach { println(it) }
 
     val dateFormat = "yyyy-MM-dd HH:mm:ss"
     val ofPattern = DateTimeFormatter.ofPattern(dateFormat)
