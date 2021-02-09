@@ -4,8 +4,18 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 fun main() {
+
+    val nowLondon = LocalDateTime.of(2021, 2, 2, 23, 30).atZone(ZoneId.of("Europe/London")).toLocalDate()
+    val nowMoscow = LocalDateTime.of(2021, 2, 3, 1, 30).atZone(ZoneId.of("Europe/Moscow")).toLocalDate()
+
+    println(nowLondon)
+    println(nowMoscow)
+    println(nowMoscow.minusYears(14))
+    println(ChronoUnit.YEARS.between(nowLondon, nowMoscow))
+
     // -Duser.timezone=Europe/London
     println("${ZoneId.systemDefault()} now ${LocalDateTime.now()}")
     println("now Moscow ${ZonedDateTime.now(ZoneId.of("Europe/Moscow")).toLocalDateTime()}")
