@@ -7,6 +7,8 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 const val GITLAB_HOST_PROP = "gitLabHost"
 const val GITLAB_API_TOKEN_PROP = "gitLabApiToken"
@@ -16,28 +18,31 @@ const val JIRA_USERNAME_PROP = "jiraUsername"
 const val JIRA_PASSWORD_PROP = "jiraPassword"
 
 fun main() {
-    val gitLab = gitLab()
-    val jira = jira()
+    val gitLab = gitLabSettings()
+    val jira = jiraSettings()
 
     val branches = branches(gitLab)
     val mrs = mrs(gitLab)
     val analyse = analyse(branches, mrs, jira)
-    createReport(analyse, File("../branch-report.xlsx"))
+    createXlsxReport(
+            analyse,
+            File("../branch-report-${LocalDate.now().format(DateTimeFormatter.ISO_DATE)}.xlsx")
+    )
 }
 
-private fun gitLab() = GitLab(
+private fun gitLabSettings() = GitLabSettings(
         host = System.getProperty(GITLAB_HOST_PROP)!!,
         apiToken = System.getProperty(GITLAB_API_TOKEN_PROP)!!,
         projectId = System.getProperty(GITLAB_PROJECT_ID_PROP)!!
 )
 
-private fun jira() = Jira(
-        host = System.getProperty(GITLAB_HOST_PROP)!!,
+private fun jiraSettings() = JiraSettings(
+        host = System.getProperty(JIRA_HOST_PROP)!!,
         username = System.getProperty(JIRA_USERNAME_PROP)!!,
         password = System.getProperty(JIRA_PASSWORD_PROP)!!
 )
 
-private fun branches(gitLab: GitLab): List<Branch> {
+private fun branches(gitLabSettings: GitLabSettings): List<Branch> {
     val listAll = mutableListOf<Branch>()
 
     val client = OkHttpClient()
@@ -49,15 +54,15 @@ private fun branches(gitLab: GitLab): List<Branch> {
         print("$pageCount ")
 
         val requestMr = Request.Builder()
-                .url("http://${gitLab.host}/api/v4/projects/${gitLab.projectId}/repository/branches?page=$pageCount")
+                .url("http://${gitLabSettings.host}/api/v4/projects/${gitLabSettings.projectId}/repository/branches?page=$pageCount")
                 .header("Content-Type", "application/json")
-                .header("PRIVATE-TOKEN", gitLab.apiToken)
+                .header("PRIVATE-TOKEN", gitLabSettings.apiToken)
                 .get()
                 .build()
         val responseMrs = client.newCall(requestMr).execute()
         val responseMrsText = responseMrs.body().string()
 
-//        println(responseMrsText)
+        println(responseMrsText)
 
         val om = ObjectMapper()
         val mrNodes = om.readTree(responseMrsText).asIterable()
@@ -81,7 +86,7 @@ private fun branches(gitLab: GitLab): List<Branch> {
     }
 }
 
-private fun task(taskName: String, jira: Jira): Task {
+private fun task(taskName: String, jira: JiraSettings): Task {
     println("get task by name $taskName")
 
     val client = OkHttpClient()
@@ -93,7 +98,7 @@ private fun task(taskName: String, jira: Jira): Task {
             )
 
     val requestLogin = Request.Builder()
-            .url("https://jira.app.local/rest/auth/1/session")
+            .url("https://${jira.host}/rest/auth/1/session")
             .header("Content-Type", "application/json")
             .post(requestBodyLogin)
             .build()
@@ -106,17 +111,16 @@ private fun task(taskName: String, jira: Jira): Task {
 
     val responseLoginText = responseLogin.body().string()
 
-//    println(responseLoginText)
+    println(responseLoginText)
 
     val om = ObjectMapper()
     val jsonNode = om.readTree(responseLoginText)
 
-    val seesionNode = jsonNode.get("session")
-    val name = seesionNode.get("name").asText()
-    val value = seesionNode.get("value").asText()
+    val sessionNode = jsonNode.get("session")
+    val name = sessionNode.get("name").asText()
+    val value = sessionNode.get("value").asText()
 
-//    println("$name=$value")
-
+    println("$name=$value")
 
     val requestTaskInfo = Request.Builder()
             .url("https://${jira.host}/rest/api/2/issue/$taskName")
@@ -128,7 +132,11 @@ private fun task(taskName: String, jira: Jira): Task {
     val responseTask = client.newCall(requestTaskInfo).execute()
     val responseTaskText = responseTask.body().string()
 
-//    println(responseTaskText)
+    println("${responseTask.code()} $responseTaskText")
+
+    if(responseTask.code() != 200){
+        throw UnsupportedOperationException("Jira auth exception with code ${responseTask.code()}")
+    }
 
     val jsonNodeTask = om.readTree(responseTaskText)
 
@@ -137,12 +145,12 @@ private fun task(taskName: String, jira: Jira): Task {
     val username = fieldsNode.get("assignee").get("displayName").asText()
     val statusDate = fieldsNode.get("resolutiondate").asText()
 
-//    println("$taskName $username $result")
+    println("$taskName $username $status")
 
     return Task(status, username, statusDate)
 }
 
-private fun mrs(gitLab: GitLab): List<Mr> {
+private fun mrs(gitLabSettings: GitLabSettings): List<Mr> {
     val listMrAll = mutableListOf<Mr>()
 
     val client = OkHttpClient()
@@ -154,15 +162,15 @@ private fun mrs(gitLab: GitLab): List<Mr> {
         print("$pageCount ")
 
         val requestMr = Request.Builder()
-                .url("http://${gitLab.host}/api/v4/projects/${gitLab.projectId}/merge_requests?state=all&scope=all&page=$pageCount")
+                .url("http://${gitLabSettings.host}/api/v4/projects/${gitLabSettings.projectId}/merge_requests?state=all&scope=all&page=$pageCount")
                 .header("Content-Type", "application/json")
-                .header("PRIVATE-TOKEN", gitLab.apiToken)
+                .header("PRIVATE-TOKEN", gitLabSettings.apiToken)
                 .get()
                 .build()
         val responseMrs = client.newCall(requestMr).execute()
         val responseMrsText = responseMrs.body().string()
 
-//        println(responseMrsText)
+        println(responseMrsText)
 
         val om = ObjectMapper()
         val mrNodes = om.readTree(responseMrsText).asIterable()
@@ -197,14 +205,14 @@ private fun mrs(gitLab: GitLab): List<Mr> {
     }
 }
 
-private fun analyse(branches: List<Branch>, mrs: List<Mr>, jira: Jira): List<Report> {
+private fun analyse(branches: List<Branch>, mrs: List<Mr>, jiraSettings: JiraSettings): List<Report> {
     return branches
             .map {
                 val branch = it
                 var task: Task? = null
                 var mrsTask: List<Mr>? = null
                 if (it.taskName != null) {
-                    task = task(it.taskName, jira)
+                    task = task(it.taskName, jiraSettings)
                     mrsTask = mrs.filter { mr -> mr.title.contains(other = it.taskName, ignoreCase = true) }
                 }
                 Report(
@@ -216,7 +224,7 @@ private fun analyse(branches: List<Branch>, mrs: List<Mr>, jira: Jira): List<Rep
             }
 }
 
-fun createReport(analyse: List<Report>, reportFile: File) {
+fun createXlsxReport(analyse: List<Report>, reportFile: File) {
     val workbook = XSSFWorkbook()
     val sheet = workbook.createSheet()
     var rowCount = 0
@@ -288,13 +296,13 @@ class Branch private constructor(
     }
 }
 
-data class GitLab(
+data class GitLabSettings(
         val host: String,
         val apiToken: String,
         val projectId: String
 )
 
-data class Jira(
+data class JiraSettings(
         val host: String,
         val username: String,
         val password: String
