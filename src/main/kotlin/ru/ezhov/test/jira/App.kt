@@ -2,6 +2,7 @@ package ru.ezhov.test.jira
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -60,7 +61,7 @@ private fun branches(gitLabSettings: GitLabSettings): List<Branch> {
                 .get()
                 .build()
         val responseMrs = client.newCall(requestMr).execute()
-        val responseMrsText = responseMrs.body().string()
+        val responseMrsText = responseMrs.body?.string()
 
         println(responseMrsText)
 
@@ -93,7 +94,7 @@ private fun task(taskName: String, jira: JiraSettings): Task {
 
     val requestBodyLogin = RequestBody
             .create(
-                    MediaType.parse("application/json"),
+                    "application/json".toMediaTypeOrNull(),
                     "{\"username\": \"${jira.username}\", \"password\": \"${jira.password}\"}"
             )
 
@@ -109,7 +110,7 @@ private fun task(taskName: String, jira: JiraSettings): Task {
     val cookies = responseLogin.header("Set-Cookie")
 
 
-    val responseLoginText = responseLogin.body().string()
+    val responseLoginText = responseLogin.body?.string()
 
     println(responseLoginText)
 
@@ -130,12 +131,12 @@ private fun task(taskName: String, jira: JiraSettings): Task {
             .build()
 
     val responseTask = client.newCall(requestTaskInfo).execute()
-    val responseTaskText = responseTask.body().string()
+    val responseTaskText = responseTask.body?.string()
 
-    println("${responseTask.code()} $responseTaskText")
+    println("${responseTask.code} $responseTaskText")
 
-    if(responseTask.code() != 200){
-        throw UnsupportedOperationException("Jira auth exception with code ${responseTask.code()}")
+    if(responseTask.code != 200){
+        throw UnsupportedOperationException("Jira auth exception with code ${responseTask.code}")
     }
 
     val jsonNodeTask = om.readTree(responseTaskText)
@@ -168,7 +169,7 @@ private fun mrs(gitLabSettings: GitLabSettings): List<Mr> {
                 .get()
                 .build()
         val responseMrs = client.newCall(requestMr).execute()
-        val responseMrsText = responseMrs.body().string()
+        val responseMrsText = responseMrs.body?.string()
 
         println(responseMrsText)
 
