@@ -1,6 +1,8 @@
 package ru.ezhov.test.ddd.sample.phone.model
 
 import arrow.core.Either
+import arrow.core.getOrElse
+import arrow.core.rightIfNotNull
 
 sealed class Target(val type: Type) {
     data class Phone private constructor(val value: String) : Target(type = Type.PHONE) {
@@ -56,7 +58,7 @@ fun main() {
 
 private fun <E, T> printResult(e: Either<E, T>) {
     when (e) {
-        is Either.Left -> e.value.toString().let { println(it) }
+        is Either.Left -> println(e.value)
         is Either.Right -> println(e.value)
     }
 }
