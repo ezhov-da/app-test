@@ -1,8 +1,6 @@
 package ru.ezhov.test.ddd.sample.phone.model
 
 import arrow.core.Either
-import arrow.core.getOrElse
-import arrow.core.rightIfNotNull
 
 sealed class Target(val type: Type) {
     data class Phone private constructor(val value: String) : Target(type = Type.PHONE) {
