@@ -2,14 +2,16 @@ package ru.ezhov.test.spark;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.stream.Collectors;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
+import static spark.Spark.post;
 
 //port 4567
 public class Application {
     public static void main(String[] args) {
-        port(8080);
+        port(8081);
 
         get("/guid/:guid", (request, response) -> {
             Thread.sleep(2000);
@@ -49,6 +51,22 @@ public class Application {
             if (rolloutBucket == null || "".equals(rolloutBucket)) {
                 int i = 5;
             }
+
+            return response;
+        }));
+
+        post("/home", ((request, response) -> {
+
+            System.out.println("==================================================");
+            System.out.println(request.uri());
+            request.headers().stream().map(h -> {
+
+                System.out.println(h + ": " + request.headers(h));
+                return h + ": " + request.headers(h);
+            }).collect(Collectors.joining("<br>"));
+            System.out.println("--------------------------------------------------");
+
+            Thread.sleep(40000000);
 
             return response;
         }));
