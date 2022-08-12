@@ -220,6 +220,17 @@
             <version>4.9.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alphacephei</groupId>
+            <artifactId>vosk</artifactId>
+            <version>0.3.38</version>
+        </dependency>
     </dependencies>
 
     <build>
