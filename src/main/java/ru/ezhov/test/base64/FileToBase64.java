@@ -1,8 +1,9 @@
 package ru.ezhov.test.base64;
 
-import sun.misc.BASE64Encoder;
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 
 /**
  * java -cp app-test.jar ru.ezhov.test.base64.FileToBase64 app-test.jar
@@ -16,12 +17,12 @@ public class FileToBase64 {
         }
         String fileAbsolutePath = args[0];
 
-        BASE64Encoder base64Encoder = new BASE64Encoder();
+        Base64.Encoder encoder = Base64.getEncoder();
 
-        try {
-            base64Encoder.encode(
-                    new BufferedInputStream(new FileInputStream(fileAbsolutePath)),
-                    System.out);
+        try (BufferedInputStream is = new BufferedInputStream(Files.newInputStream(Paths.get(fileAbsolutePath)))) {
+            byte[] data = new byte[is.available()];
+            is.read(data);
+            System.out.println(encoder.encodeToString(data));
         } catch (Exception e) {
             e.printStackTrace();
         }
